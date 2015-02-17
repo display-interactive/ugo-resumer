@@ -9,38 +9,38 @@
         Polymer('ugo-resumer', {
             /**
              * separator between values
-             * @param {String}
+             * @type {String}
              */
             separator: ' - ',
 
             /**
              * default value for the ugo-resumer
-             * @param {String}
+             * @type {String}
              */
             default: '',
 
             /**
              * The attribute used to get children
-             * @param {String}
+             * @type {String}
              */
             attribute: 'resumer-item',
 
             /**
              * Show resume
              *
-             * @return {Boolean}
+             * @type {Boolean}
              */
             opened: false,
 
             /**
              * fields wrapped by the ugo-resumer tag
-             * @param {NodeList}
+             * @type {NodeList}
              */
             items: [],
 
             /**
              * The resume value
-             * @param {String}
+             * @type {String}
              */
             resume: '',
 
@@ -98,14 +98,15 @@
             /**
              * Opened property
              */
-            openedChanged: function(oldValue, newValue) {
+            openedChanged: function() {
                 this.$.ugoResume.style.display = this.opened ? 'inline' : 'none';
             },
 
             /**
              * Attribute change
+             * @param {String} attrName
              */
-            attributeChanged: function(attrName, oldVal, newVal) {
+            attributeChanged: function(attrName) {
                 if ('opened' !== attrName)
                     this.onChange();
             },
@@ -113,7 +114,7 @@
             /**
              * Get value/text from element
              *
-             * @param element
+             * @param {HTMLElement} element
              * @returns {*}
              * @private
              */
@@ -171,7 +172,7 @@
             /**
              * Get text from node
              *
-             * @param element
+             * @param {HTMLElement} element
              * @returns {String}
              */
             getText: function(element) {

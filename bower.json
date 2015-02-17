@@ -1,0 +1,23 @@
+{
+    "name": "core-resumer",
+    "version": "0.0.1",
+    "authors": [
+        "Florian Roy"
+    ],
+    "description": "Polymer Element helper to resume form contents",
+    "main": "element/*",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "keywords": ["Polymer", "web-components", "resume", "html", "form"],
+    "dependencies": {
+        "polymer": "Polymer/polymer#~0.5.4"
+    },
+    "devDependencies": {
+        "web-component-tester": "*"
+    }
+}

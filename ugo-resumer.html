@@ -1,6 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<polymer-element name="ugo-resumer" on-change="{{onChange}}" attributes="separator default attribute opened">
+<polymer-element name="ugo-resumer" on-change="{{onChange}}" on-blur="{{onChange}}" attributes="separator default attribute opened">
     <template>
         <span id="ugoResume">{{resume}}</span>
         <content></content>
@@ -61,6 +61,7 @@
             onChange: function() {
                 var items = [], i, value, index;
                 this.items = this.getItems();
+                console.log(this.items);
 
                 //collect values
                 for (i = 0; i < this.items.length; ++i) {
@@ -122,9 +123,8 @@
                     case 'SELECT':
                         var selected = [], i, option;
                         for (i = 0; i < element.options.length; i++) {
-                            if (null !== element.options[i].getAttribute('selected')) {
-                                option = element.options[i];
-
+                            option = element.options[i];
+                            if (option.selected) {
                                 if (null !== element.getAttribute('multiple')) {
                                     selected.push(this.getText(option).trim());
                                 } else {

@@ -4,9 +4,9 @@
 <head>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta charset="utf-8">
-    <title>Core resumer demo</title>
+    <title>ugo resumer demo</title>
     <script src="../webcomponentsjs/webcomponents.js"></script>
-    <link rel="import" href="core-resumer.html">
+    <link rel="import" href="ugo-resumer.html">
     <style>
         #container {
             padding-top: 15%;
@@ -21,7 +21,7 @@
 <div id="container">
     <h1><code>Core resumer with polymer</code> in action:</h1>
     <form method="GET">
-        <core-resumer id="rsm">
+        <ugo-resumer id="rsm" opened="opened" separator=" - " default="default resume" attribute="resumer-item">
             <input type="hidden" value="1" resumer-item />
             <select name="bla" multiple resumer-item>
                 <option value=""></option>
@@ -33,15 +33,7 @@
             <input type="text" resumer-item value="3" />
 
             <span resumer-item>4</span>
-        </core-resumer>
-
-        <p>value: <span id="test"></span></p>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('test').innerHTML = document.getElementById('rsm').resume;
-            });
-        </script>
+        </ugo-resumer>
     </form>
 </div>
 </body>

@@ -1,8 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 
-<polymer-element name="ugo-resumer" on-change="{{onChange}}" attributes="separator default attribute">
+<polymer-element name="ugo-resumer" on-change="{{onChange}}" attributes="separator default attribute opened">
     <template>
-        <span>{{resume}}</span>
+        <span id="ugoResume">{{resume}}</span>
         <content></content>
     </template>
     <script>
@@ -26,6 +26,13 @@
             attribute: 'resumer-item',
 
             /**
+             * Show resume
+             *
+             * @return {Boolean}
+             */
+            opened: false,
+
+            /**
              * fields wrapped by the core-resumer tag
              * @param {NodeList}
              */
@@ -42,15 +49,8 @@
              */
             ready: function() {
                 this.onChange();
+                this.openedChanged(false, this.opened);
                 this.onMutation(this, this.onChange);
-            },
-
-            /**
-             * Check is element has items
-             * @returns {boolean}
-             */
-            isEmpty: function() {
-                return this.items.length === 0;
             },
 
             /**
@@ -93,6 +93,21 @@
 
                 this.fire('resumeChange', this.resume); //fire event
                 this.onMutation(this, this.onChange);
+            },
+
+            /**
+             * Opened property
+             */
+            openedChanged: function(oldValue, newValue) {
+                this.$.ugoResume.style.display = this.opened ? 'inline' : 'none';
+            },
+
+            /**
+             * Attribute change
+             */
+            attributeChanged: function(attrName, oldVal, newVal) {
+                if ('opened' !== attrName)
+                    this.onChange();
             },
 
             /**

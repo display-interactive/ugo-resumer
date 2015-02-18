@@ -2,14 +2,14 @@
     "author": {
         "name": "Florian Roy"
     },
-    "description": "Polymer Element helper to resume form contents",
+    "description": "Polymer Element that help to previews image, audio, video",
     "devDependencies": {
         "web-component-tester": "~2.0.1"
     },
-    "name": "ugo-resumer",
+    "name": "ugo-previewer",
     "repository": {
         "type": "git",
-        "url": "https://github.com/display-interactive/ugo-resumer.git"
+        "url": "https://github.com/display-interactive/ugo-previewer.git"
     },
     "version": "0.0.1"
 }

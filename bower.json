@@ -1,10 +1,10 @@
 {
-    "name": "ugo-resumer",
+    "name": "ugo-previewer",
     "version": "0.0.1",
     "authors": [
         "Florian Roy"
     ],
-    "description": "Polymer Element helper to resume form contents",
+    "description": "Polymer Element that help to previews image, audio, video",
     "main": "element/*",
     "ignore": [
         "**/.*",
@@ -13,7 +13,7 @@
         "test",
         "tests"
     ],
-    "keywords": ["Polymer", "web-components", "resume", "html", "form"],
+    "keywords": ["Polymer", "web-components", "media", "preview", "html", "audio", "img", "video"],
     "dependencies": {
         "polymer": "Polymer/polymer#~0.5.4"
     },

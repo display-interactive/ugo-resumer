@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>resumer-element</title>
+
+    <!-- Import dependencies -->
+    <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../ugo-resumer.html">
+</head>
+
+<body>
+<ugo-resumer id="typical">
+    <select multiple resumer-item>
+        <option value="1" selected="selected">1 test</option>
+        <option value="2" selected="selected">2 test 2</option>
+        <option value="3" selected="selected">3 3 test</option>
+    </select>
+</ugo-resumer>
+
+<br/>
+
+<ugo-resumer id="t1">
+    <select resumer-item>
+        <option selected="selected">1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+</ugo-resumer>
+
+<br/>
+
+<ugo-resumer id="t2">
+    <select resumer-item>
+        <option selected="selected">2</option>
+        <option selected="selected">1</option>
+        <option selected="selected">3</option>
+    </select>
+</ugo-resumer>
+
+<br/>
+
+<ugo-resumer id="t3" separator=" ">
+    <div resumer-item>0t</div>
+    <input type="hidden" resumer-item value="1v" />
+    <input type="text" resumer-item value="2v" />
+
+    <input type="hidden" resumer-item value="3v" />
+
+    <input type="checkbox" resumer-item checked="checked" value="4v" />
+
+    <label>
+        <input type="checkbox" resumer-item checked="checked" value="5v" />
+        5t
+    </label>
+
+    <label for="cbox">6t</label>
+    <input type="checkbox" checked="checked" resumer-item id="cbox" value="6v" />
+
+    <input type="radio" resumer-item name="rad1" value="7v" />
+    <input type="radio" resumer-item name="rad1" checked="checked" value="8v" />
+    <input type="radio" resumer-item name="rad1" value="9v" />
+
+    <label><input type="radio" resumer-item name="rad2" value="10v" /> 10t</label>
+    <label><input type="radio" resumer-item name="rad2" checked="checked" value="11v" /> 11t</label>
+    <label><<input type="radio" resumer-item name="rad2" value="12v" /> 12t</label>
+
+    <label for="rad3_13">13t</label><input type="radio" resumer-item name="rad3" id="rad3_13" value="13v" />
+    <label for="rad3_14">14t</label><input type="radio" resumer-item name="rad3" id="rad3_14" value="14v" />
+    <label for="rad3_15">15t</label><input type="radio" resumer-item name="rad3" checked="checked" id="rad3_15" value="15v" />
+
+    <select multiple resumer-item>
+        <option value="16v" selected="selected">16t</option>
+        <option value="17v" selected="selected">17t</option>
+        <option value="18v" selected="selected">18t</option>
+    </select>
+
+    <select resumer-item>
+        <option value="19v">19t</option>
+        <option value="20v">20t</option>
+        <option value="21v" selected="selected">21t</option>
+    </select>
+</ugo-resumer>
+
+
+<ugo-resumer id="t4" separator=" ">
+    <div resumer-item="4">0t</div>
+    <input type="hidden" resumer-item="3" value="1v" />
+    <input type="text" resumer-item="2" value="2v" />
+
+    <input type="hidden" resumer-item="1" value="3v" />
+
+    <input type="checkbox" resumer-item="0" checked="checked" value="4v" />
+</ugo-resumer>
+
+<ugo-resumer id="t5" separator=" ">
+    <div resumer-item="4">0t</div>
+    <input type="hidden" resumer-item value="1v" />
+    <input type="text" resumer-item="2" value="2v" />
+
+    <input type="hidden" resumer-item="18" value="3v" />
+
+    <input type="checkbox" resumer-item checked="checked" value="4v" />
+</ugo-resumer>
+
+
+<script>
+    suite('<ugo-resumer>', function() {
+        var el = document.getElementById('typical');
+
+        test('exists', function() {
+            assert.isNotNull(el);
+        });
+
+        test('ugo-resumer instantiated', function() {
+            assert.equal(1, el.querySelectorAll('[' + el.attribute + ']').length);
+        });
+
+        test('get values correctly', function() {
+            assert.equal('1 test - 2 test 2 - 3 3 test', el.resume);
+            assert.equal('1', document.getElementById('t1').resume);
+            assert.equal('3', document.getElementById('t2').resume); //it will get the last
+            assert.equal('0t 1v 2v 3v 4v 5t 6t 8v 11t 15t 16t 17t 18t 21t', document.getElementById('t3').resume);
+            assert.equal('4v 3v 2v 1v 0t', document.getElementById('t4').resume);
+            assert.equal('2v 0t 1v 3v 4v', document.getElementById('t5').resume);
+        });
+    });
+</script>
+
+</body>
+</html>

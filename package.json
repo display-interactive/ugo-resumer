@@ -2,7 +2,7 @@
     "author": {
         "name": "Florian Roy"
     },
-    "description": "Polymer Element that help to previews image, audio, video",
+    "description": "Polymer Element that help to previews image, audio, video written in a form field",
     "devDependencies": {
         "web-component-tester": "~2.0.1"
     },

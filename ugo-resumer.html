@@ -1,8 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="stylesheet" href="ugo-resumer.css" shim-shadowdom>
 
-<polymer-element name="ugo-resumer" on-change="{{onChange}}" on-blur="{{onChange}}" attributes="separator default attribute opened">
+
+<polymer-element name="ugo-resumer"  on-change="{{onChange}}" on-blur="{{onChange}}" attributes="separator default attribute showed">
     <template>
-        <span id="ugoResume">{{resume}}</span>
+        <span id="ugoResume" class="ugo-resume" style="">{{resume}}</span>
         <content></content>
     </template>
     <script>
@@ -30,7 +32,7 @@
              *
              * @type {Boolean}
              */
-            opened: false,
+            showed: false,
 
             /**
              * fields wrapped by the ugo-resumer tag
@@ -49,7 +51,7 @@
              */
             ready: function() {
                 this.onChange();
-                this.openedChanged(false, this.opened);
+                this.showedChanged(false, this.showed);
                 this.onMutation(this, this.onChange);
             },
 
@@ -98,8 +100,8 @@
             /**
              * Opened property
              */
-            openedChanged: function() {
-                this.$.ugoResume.style.display = this.opened ? 'inline' : 'none';
+            showedChanged: function() {
+                this.$.ugoResume.style.display = this.showed ? 'inline-block' : 'none';
             },
 
             /**
@@ -107,7 +109,7 @@
              * @param {String} attrName
              */
             attributeChanged: function(attrName) {
-                if ('opened' !== attrName)
+                if ('showed' !== attrName)
                     this.onChange();
             },
 

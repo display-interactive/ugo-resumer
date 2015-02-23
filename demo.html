@@ -4,44 +4,35 @@
 <head>
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta charset="utf-8">
-    <title>Core resumer demo</title>
+    <title>Ugo resumer demo</title>
     <script src="../webcomponentsjs/webcomponents.js"></script>
-    <link rel="import" href="core-resumer.html">
+    <link rel="import" href="ugo-resumer.html">
     <style>
         #container {
             padding-top: 15%;
             text-align: center;
         }
-
     </style>
 </head>
 
 <body unresolved>
 
 <div id="container">
-    <h1><code>Core resumer with polymer</code> in action:</h1>
+    <h1><code>Ugo resumer with polymer</code> in action:</h1>
     <form method="GET">
-        <core-resumer id="rsm">
-            <input type="hidden" value="1" resumer-item />
+        <ugo-resumer id="rsm" showed style="background-color: #ccc;">
+            <input type="hidden" value="1" resumer-item /><br/>
             <select name="bla" multiple resumer-item>
                 <option value=""></option>
                 <option value="1" selected="selected">1 test</option>
                 <option value="2" selected="selected">2 test 2</option>
                 <option value="3" selected="selected">3 3 test</option>
-            </select>
+            </select><br/>
 
-            <input type="text" resumer-item value="3" />
+            <input type="text" resumer-item value="3" /></br>
 
             <span resumer-item>4</span>
-        </core-resumer>
-
-        <p>value: <span id="test"></span></p>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('test').innerHTML = document.getElementById('rsm').resume;
-            });
-        </script>
+        </ugo-resumer>
     </form>
 </div>
 </body>

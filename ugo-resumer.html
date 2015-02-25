@@ -2,10 +2,10 @@
 <link rel="stylesheet" href="ugo-resumer.css" shim-shadowdom>
 
 
-<polymer-element name="ugo-resumer"  on-change="{{onChange}}" on-blur="{{onChange}}" attributes="separator default attribute showed">
+<polymer-element name="ugo-resumer"  on-change="{{onChange}}" on-blur="{{onChange}}" attributes="attributeSelector separator default attribute showed">
     <template>
         <span id="ugoResume" class="ugo-resume" style="">{{resume}}</span>
-        <content></content>
+        <content id="ugoResumeContent"></content>
     </template>
     <script>
         Polymer('ugo-resumer', {
@@ -22,6 +22,12 @@
             default: '',
 
             /**
+             * The selector to get get children
+             * @type {String}
+             */
+            attributeSelector: '[resumer-item]',
+
+            /**
              * The attribute used to get children
              * @type {String}
              */
@@ -33,12 +39,6 @@
              * @type {Boolean}
              */
             showed: false,
-
-            /**
-             * fields wrapped by the ugo-resumer tag
-             * @type {NodeList}
-             */
-            items: [],
 
             /**
              * The resume value
@@ -62,7 +62,6 @@
              */
             onChange: function() {
                 var items = [], i, value, index;
-                this.items = this.getItems();
 
                 //collect values
                 for (i = 0; i < this.items.length; ++i) {
@@ -164,11 +163,13 @@
             },
 
             /**
+             * fields wrapped by the ugo-resumer tag
+             *
              * @returns {NodeList}
-             * @private
+             * @property items
              */
-            getItems: function() {
-                return this.querySelectorAll('['+this.attribute+']');
+            get items() {
+                return this.querySelectorAll(this.attributeSelector);
             },
 
             /**

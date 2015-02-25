@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="ugo-resumer.css" shim-shadowdom>
 
 
-<polymer-element name="ugo-resumer"  on-change="{{onChange}}" on-blur="{{onChange}}" attributes="attributeSelector separator default attribute showed">
+<polymer-element name="ugo-resumer" on-keyup="{{onChange}}" on-change="{{onChange}}" on-blur="{{onChange}}" attributes="attributeSelector separator default attribute showed">
     <template>
         <span id="ugoResume" class="ugo-resume" style="">{{resume}}</span>
         <content id="ugoResumeContent"></content>
@@ -52,6 +52,8 @@
             ready: function() {
                 this.onChange();
                 this.showedChanged(false, this.showed);
+
+                //observe lightDOM changes
                 this.onMutation(this, this.onChange);
             },
 
@@ -92,7 +94,8 @@
                     this.resume = this.default;
                 }
 
-                this.fire('resumeChange', this.resume); //fire event
+                this.fire('ugo-resumer-change', this.resume); //fire event
+                //observe lightDOM changes
                 this.onMutation(this, this.onChange);
             },
 

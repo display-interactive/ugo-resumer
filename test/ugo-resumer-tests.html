@@ -97,9 +97,9 @@
     <input type="checkbox" resumer-item="0" checked="checked" value="4v" />
 </ugo-resumer>
 
-<ugo-resumer id="t5" separator=" ">
+<ugo-resumer id="t5" showed separator=" ">
     <div resumer-item="4">0t</div>
-    <input type="hidden" resumer-item value="1v" />
+    <input type="hidden" resumer-item id="eventtester" value="1v" />
     <input type="text" resumer-item="2" value="2v" />
 
     <input type="hidden" resumer-item="18" value="3v" />
@@ -127,6 +127,38 @@
             assert.equal('0t 1v 2v 3v 4v 5t 6t 8v 11t 15t 16t 17t 18t 21t', document.getElementById('t3').resume);
             assert.equal('4v 3v 2v 1v 0t', document.getElementById('t4').resume);
             assert.equal('2v 0t 1v 3v 4v', document.getElementById('t5').resume);
+        });
+
+        /**
+         * Trigger event polyfill
+         *
+         * @param {HTMLElement} element
+         * @param {String} eventName
+         * @private
+         */
+        var _triggerEvent = function(element, eventName) {
+            var event; // The custom event that will be created
+            if (document.createEvent) {
+                event = document.createEvent("HTMLEvents");
+                event.initEvent(eventName, true, true);
+            } else {
+                event = document.createEventObject();
+                event.eventType = eventName;
+            }
+
+            event.eventName = eventName;
+
+            if (document.createEvent) {
+                element.dispatchEvent(event);
+            } else {
+                element.fireEvent("on" + event.eventType, event);
+            }
+        };
+
+        test('test event', function() {
+            document.querySelector('#eventtester').value = '50v';
+            _triggerEvent(document.getElementById('t5'), 'change');
+            assert.equal('2v 0t 50v 3v 4v', document.getElementById('t5').resume);
         });
     });
 </script>

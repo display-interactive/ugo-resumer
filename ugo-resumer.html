@@ -90,8 +90,6 @@
 
         onMutation: function(target) {
             this.observer = new MutationObserver(function(mutations) {
-                console.log('mutation');
-                Polymer.dom.flush();
                 this.onChange();
             }.bind(this));
 

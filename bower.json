@@ -1,6 +1,6 @@
 {
     "name": "ugo-resumer",
-    "version": "0.0.1",
+    "version": "0.2",
     "authors": [
         "Florian Roy"
     ],
@@ -15,7 +15,7 @@
     ],
     "keywords": ["Polymer", "web-components", "resume", "html", "form"],
     "dependencies": {
-        "polymer": "Polymer/polymer#^0.5"
+        "polymer": "Polymer/polymer#^0.8.0-rc.4"
     },
     "devDependencies": {
         "web-component-tester": "*"

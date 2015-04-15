@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <meta charset="utf-8">
     <title>Ugo resumer demo</title>
-    <script src="../webcomponentsjs/webcomponents.js"></script>
-    <link rel="import" href="ugo-resumer.html">
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../ugo-resumer.html">
     <style>
         #container {
             padding-top: 15%;
@@ -20,7 +20,7 @@
 <div id="container">
     <h1><code>Ugo resumer with polymer</code> in action:</h1>
     <form method="GET">
-        <ugo-resumer id="rsm" showed style="background-color: #ccc;">
+        <ugo-resumer id="rsm" opened style="background-color: #ccc;">
             <input type="hidden" value="1" resumer-item /><br/>
             <select name="bla" multiple resumer-item>
                 <option value=""></option>
@@ -35,5 +35,10 @@
         </ugo-resumer>
     </form>
 </div>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        document.body.removeAttribute('unresolved');
+    }, false);
+</script>
 </body>
 </html>

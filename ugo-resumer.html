@@ -1,215 +1,250 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="stylesheet" href="ugo-resumer.css" shim-shadowdom>
 
-
-<polymer-element name="ugo-resumer" on-keyup="{{onChange}}" on-change="{{onChange}}" on-blur="{{onChange}}" attributes="attributeSelector separator default attribute showed">
+<dom-module id="ugo-resumer">
+    <link rel="stylesheet" href="ugo-resumer.css">
     <template>
-        <span id="ugoResume" class="ugo-resume" style="">{{resume}}</span>
+        <span id="ugoResume" class="ugo-resume">{{resume}}</span>
         <content id="ugoResumeContent"></content>
     </template>
-    <script>
-        Polymer('ugo-resumer', {
+</dom-module>
+<script>
+    Polymer({
+        is: 'ugo-resumer',
+
+        properties: {
             /**
              * separator between values
-             * @type {String}
              */
-            separator: ' - ',
+            separator: {
+                type: String,
+                value: ' - '
+            },
 
             /**
              * default value for the ugo-resumer
-             * @type {String}
              */
-            default: '',
+            emptyValue: {
+                type: String,
+                value: ''
+            },
 
             /**
              * The selector to get get children
-             * @type {String}
              */
-            attributeSelector: '[resumer-item]',
+            attributeSelector: {
+                type: String,
+                value: '[resumer-item]'
+            },
 
             /**
              * The attribute used to get children
-             * @type {String}
              */
-            attribute: 'resumer-item',
+            attribute: {
+                type: String,
+                value: 'resumer-item',
+
+            },
 
             /**
              * Show resume
-             *
-             * @type {Boolean}
              */
-            showed: false,
+            opened: {
+                type: Boolean,
+                value: false,
+                observer: 'openedChanged'
+            }
+        },
 
-            /**
-             * The resume value
-             * @type {String}
-             */
-            resume: '',
+        observers: {
+            'separator emptyValue attributeSelector attribute': 'onChange'
+        },
 
-            /**
-             * Constructor
-             */
-            ready: function() {
+        listeners: {
+            'keyup': 'onChange',
+            'change': 'onChange',
+            'blur': 'onChange'
+        },
+
+        /**
+         * The resume value
+         * @type {String}
+         */
+        resume: '',
+
+        observer: null,
+
+        /**
+         * Constructor
+         */
+        ready: function() {
+            this.onMutation();
+        },
+
+        /**
+         * When removing element
+         */
+        detached: function() {
+            //disconnect observer
+            this.observer.disconnect();
+        },
+
+        onMutation: function(target) {
+            this.observer = new MutationObserver(function(mutations) {
+                console.log('mutation');
+                Polymer.dom.flush();
                 this.onChange();
-                this.showedChanged(false, this.showed);
+            }.bind(this));
 
-                //observe lightDOM changes
-                this.onMutation(this, this.onChange);
-            },
+            this.observer.observe(this, {attributes: true, childList: true, characterData: true});
+        },
 
-            /**
-             * Build resume with fields
-             *
-             * @private
-             */
-            onChange: function() {
-                var items = [], i, value, index;
+        /**
+         * Build resume with fields
+         *
+         * @private
+         */
+        onChange: function() {
+            var
+                domItems = this.items,
+                items = [],
+                i,
+                value,
+                index
+            ;
 
-                //collect values
-                for (i = 0; i < this.items.length; ++i) {
-                    index = parseInt(this.items[i].getAttribute(this.attribute));
-                    value = this.getValue(this.items[i]);
+            //collect values
+            for (i = 0; i < domItems.length; ++i) {
+                index = parseInt(domItems[i].getAttribute(this.attribute));
+                value = this.getValue(domItems[i]);
 
-                    if (value && '' != value.trim()) {
-                        if (items[index] == undefined && !isNaN(index)) {
-                            items[index] = value;
-                        } else {
-                            items.push(value);
-                        }
+                if (value && '' != value.trim()) {
+                    if (items[index] == undefined && !isNaN(index)) {
+                        items[index] = value;
+                    } else {
+                        items.push(value);
                     }
                 }
+            }
 
-                //rebase keys
-                var text = [];
-                for (index in items) {
-                    if (items.hasOwnProperty(index)) {
-                        text.push(items[index]);
-                    }
+            //rebase keys
+            var text = [];
+            for (index in items) {
+                if (items.hasOwnProperty(index)) {
+                    text.push(items[index]);
                 }
+            }
 
-                //send concat values or return empty_text
-                if (items.length > 0) {
-                    this.resume = text.join(this.separator);
-                } else {
-                    this.resume = this.default;
-                }
+            //send concat values or return empty_text
+            if (items.length > 0) {
+                this.resume = text.join(this.separator);
+            } else {
+                this.resume = this.emptyValue;
+            }
 
-                this.fire('ugo-resumer-change', this.resume); //fire event
-                //observe lightDOM changes
-                this.onMutation(this, this.onChange);
-            },
+            this.fire('ugo-resumer-change', this.resume); //fire event
+        },
 
-            /**
-             * Opened property
-             */
-            showedChanged: function() {
-                this.$.ugoResume.style.display = this.showed ? 'inline-block' : 'none';
-            },
+        /**
+         * Showed property
+         */
+        openedChanged: function() {
+            this.$.ugoResume.style.display = this.opened ? 'inline-block' : 'none';
+        },
 
-            /**
-             * Attribute change
-             * @param {String} attrName
-             */
-            attributeChanged: function(attrName) {
-                if ('showed' !== attrName)
-                    this.onChange();
-            },
-
-            /**
-             * Get value/text from element
-             *
-             * @param {HTMLElement} element
-             * @returns {*}
-             * @private
-             */
-            getValue: function(element) {
-                switch (element.tagName) {
-                    case 'SELECT':
-                        var selected = [], i, option;
-                        for (i = 0; i < element.options.length; i++) {
-                            option = element.options[i];
-                            if (option.selected) {
-                                if (null !== element.getAttribute('multiple')) {
-                                    selected.push(this.getText(option).trim());
-                                } else {
-                                    return this.getText(option).trim();
-                                }
+        /**
+         * Get value/text from element
+         *
+         * @param {HTMLElement} element
+         * @returns {*}
+         * @private
+         */
+        getValue: function(element) {
+            switch (element.tagName) {
+                case 'SELECT':
+                    var selected = [], i, option;
+                    for (i = 0; i < element.options.length; i++) {
+                        option = element.options[i];
+                        if (option.selected) {
+                            if (null !== element.getAttribute('multiple')) {
+                                selected.push(this.getText(option).trim());
+                            } else {
+                                return this.getText(option).trim();
                             }
                         }
-
-                        return selected.join(this.separator);
-                        break;
-                    case 'INPUT':
-                        switch (element.getAttribute('type')) {
-                            case 'radio':
-                            case 'checkbox':
-                                if (!element.checked) return false; //don't store value if not checked
-
-                                if (element.id) {
-                                    var label = document.querySelector('label[for="' + element.id + '"]');
-                                    if (label)
-                                        return this.getText(label).trim();
-                                } else if (element.parentNode.tagName === 'LABEL') {
-                                    return this.getText(element.parentNode).trim();
-                                }
-                                break;
-                        }
-                        break;
-                }
-
-                var text = this.getText(element).trim();
-                if ('' != text) {
-                    return text;
-                }
-
-                return element.value.trim();
-            },
-
-            /**
-             * fields wrapped by the ugo-resumer tag
-             *
-             * @returns {NodeList}
-             * @property items
-             */
-            get items() {
-                return this.querySelectorAll(this.attributeSelector);
-            },
-
-            /**
-             * Get text from node
-             *
-             * @param {HTMLElement} element
-             * @returns {String}
-             */
-            getText: function(element) {
-                var node,
-                        ret = "",
-                        i = 0,
-                        nodeType = element.nodeType;
-
-                if (!nodeType) {
-                    // If no nodeType, this is expected to be an array
-                    for (; (node = element[i]); i++) {
-                        // Do not traverse comment nodes
-                        ret += this.getText(node);
                     }
-                } else if (nodeType === 1 || nodeType === 9 || nodeType === 11) {
-                    // Use textContent for elements
-                    // innerText usage removed for consistency of new lines (see #11153)
-                    if (typeof element.textContent === "string") {
-                        return element.textContent;
-                    } else {
-                        // Traverse its children
-                        for (element = element.firstChild; element; element = element.nextSibling) {
-                            ret += this.getText(element);
-                        }
-                    }
-                } else if (nodeType === 3 || nodeType === 4) {
-                    return element.nodeValue;
-                }
 
-                return ret;
+                    return selected.join(this.separator);
+                    break;
+                case 'INPUT':
+                    switch (element.getAttribute('type')) {
+                        case 'radio':
+                        case 'checkbox':
+                            if (!element.checked) return false; //don't store value if not checked
+
+                            if (element.id) {
+                                var label = document.querySelector('label[for="' + element.id + '"]');
+                                if (label)
+                                    return this.getText(label).trim();
+                            } else if (element.parentNode.tagName === 'LABEL') {
+                                return this.getText(element.parentNode).trim();
+                            }
+                            break;
+                    }
+                    break;
             }
-        });
-    </script>
-</polymer-element>
+
+            var text = this.getText(element).trim();
+            if ('' != text) {
+                return text;
+            }
+
+            return element.value.trim();
+        },
+
+        /**
+         * fields wrapped by the ugo-resumer tag
+         *
+         * @returns {NodeList}
+         * @property items
+         */
+        get items() {
+            return this.querySelectorAll(this.attributeSelector);
+        },
+
+        /**
+         * Get text from node
+         *
+         * @param {HTMLElement} element
+         * @returns {String}
+         */
+        getText: function(element) {
+            var node,
+                    ret = "",
+                    i = 0,
+                    nodeType = element.nodeType;
+
+            if (!nodeType) {
+                // If no nodeType, this is expected to be an array
+                for (; (node = element[i]); i++) {
+                    // Do not traverse comment nodes
+                    ret += this.getText(node);
+                }
+            } else if (nodeType === 1 || nodeType === 9 || nodeType === 11) {
+                // Use textContent for elements
+                // innerText usage removed for consistency of new lines (see #11153)
+                if (typeof element.textContent === "string") {
+                    return element.textContent;
+                } else {
+                    // Traverse its children
+                    for (element = element.firstChild; element; element = element.nextSibling) {
+                        ret += this.getText(element);
+                    }
+                }
+            } else if (nodeType === 3 || nodeType === 4) {
+                return element.nodeValue;
+            }
+
+            return ret;
+        }
+    });
+</script>

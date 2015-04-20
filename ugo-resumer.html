@@ -51,6 +51,11 @@
                 type: Boolean,
                 value: false,
                 observer: 'openedChanged'
+            },
+
+            resume: {
+                type: String,
+                notify: true
             }
         },
 
@@ -68,14 +73,15 @@
          * The resume value
          * @type {String}
          */
-        resume: '',
+        //resume: '',
 
-        observer: null,
+        mutationObserver: null,
 
         /**
          * Constructor
          */
         ready: function() {
+            this.onChange();
             this.onMutation();
         },
 
@@ -84,15 +90,15 @@
          */
         detached: function() {
             //disconnect observer
-            this.observer.disconnect();
+            this.mutationObserver.disconnect();
         },
 
         onMutation: function(target) {
-            this.observer = new MutationObserver(function(mutations) {
+            this.mutationObserver = new MutationObserver(function(mutations) {
                 this.onChange();
             }.bind(this));
 
-            this.observer.observe(this, {attributes: true, childList: true, characterData: true});
+            this.mutationObserver.observe(this, {attributes: true, childList: true, characterData: true});
         },
 
         /**

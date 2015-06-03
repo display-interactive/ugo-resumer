@@ -1,7 +1,11 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <dom-module id="ugo-resumer">
-    <link rel="import" type="css" href="ugo-resumer.css">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
     <template>
         <span id="ugoResume" class="ugo-resume">{{resume}}</span>
         <content id="ugoResumeContent"></content>
@@ -59,30 +63,22 @@
             }
         },
 
-        observers: {
-            'separator emptyValue attributeSelector attribute': 'onChange'
-        },
+        observers: [
+            '_onChange(separator, emptyValue, attributeSelector, attribute)'
+        ],
 
         listeners: {
-            'keyup': 'onChange',
-            'change': 'onChange',
-            'blur': 'onChange'
+            'keyup': '_onChange',
+            'change': '_onChange',
+            'blur': '_onChange'
         },
-
-        /**
-         * The resume value
-         * @type {String}
-         */
-        //resume: '',
-
-        mutationObserver: null,
 
         /**
          * Constructor
          */
         ready: function() {
-            this.onChange();
-            this.onMutation();
+            this._onChange();
+            this._onMutation();
         },
 
         /**
@@ -90,15 +86,17 @@
          */
         detached: function() {
             //disconnect observer
-            this.mutationObserver.disconnect();
+            if (this.mutationObserver) this.mutationObserver.disconnect();
         },
 
-        onMutation: function(target) {
-            this.mutationObserver = new MutationObserver(function(mutations) {
-                this.onChange();
-            }.bind(this));
+        _onMutation: function(target) {
+            if (typeof window.MutationObserver == 'function') {
+                this.mutationObserver = new MutationObserver(function(mutations) {
+                    this._onChange();
+                }.bind(this));
 
-            this.mutationObserver.observe(this, {attributes: true, childList: true, characterData: true});
+                this.mutationObserver.observe(this, {attributes: true, childList: true, characterData: true});
+            }
         },
 
         /**
@@ -106,9 +104,8 @@
          *
          * @private
          */
-        onChange: function() {
-            var
-                domItems = this.items,
+        _onChange: function() {
+            var domItems = this.items,
                 items = [],
                 i,
                 value,

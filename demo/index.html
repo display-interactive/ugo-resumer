@@ -20,19 +20,21 @@
 <div id="container">
     <h1><code>Ugo resumer with polymer</code> in action:</h1>
     <form method="GET">
-        <ugo-resumer id="rsm" opened style="background-color: #ccc;">
-            <input type="hidden" value="1" resumer-item /><br/>
-            <select name="bla" multiple resumer-item>
+        <ugo-resumer id="rsm" opened separator="~" attribute-selector="[resumer-item]" attribute="resumer-item" style="background-color: #ccc;">
+            <input type="hidden" value="hidden" resumer-item="6" /><br/>
+            <select name="bla" multiple resumer-item="5">
                 <option value=""></option>
                 <option value="1" selected="selected">1 test</option>
                 <option value="2" selected="selected">2 test 2</option>
                 <option value="3" selected="selected">3 3 test</option>
             </select><br/>
 
-            <input type="text" resumer-item value="3" /></br>
+            <input type="text" resumer-item="4" value="3" /></br>
 
-            <span resumer-item>4</span>
+            <span resumer-item="3">4</span>
         </ugo-resumer>
+
+        <ugo-resumer id="rsm2" opened empty-value="paf" style="background-color: #ccc;"></ugo-resumer>
     </form>
 </div>
 <script>

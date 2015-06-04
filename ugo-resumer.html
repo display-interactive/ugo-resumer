@@ -59,7 +59,8 @@
 
             resume: {
                 type: String,
-                notify: true
+                notify: true,
+                readOnly: true
             }
         },
 
@@ -136,9 +137,9 @@
 
             //send concat values or return empty_text
             if (items.length > 0) {
-                this.resume = text.join(this.separator);
+                this._setResume(text.join(this.separator));
             } else {
-                this.resume = this.emptyValue;
+                this._setResume(this.emptyValue);
             }
 
             this.fire('resumerChange', this.resume); //fire event

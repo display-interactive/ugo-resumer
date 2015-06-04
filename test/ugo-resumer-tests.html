@@ -97,9 +97,9 @@
     <input type="checkbox" resumer-item="0" checked="checked" value="4v" />
 </ugo-resumer>
 
-<ugo-resumer id="t5" showed separator=" ">
+<ugo-resumer id="t5" opened separator=" ">
     <div resumer-item="4">0t</div>
-    <input type="hidden" resumer-item id="eventtester" value="1v" />
+    <input type="text" resumer-item id="eventtester" style="border: 1px dashed indianred" value="1v" />
     <input type="text" resumer-item="2" value="2v" />
 
     <input type="hidden" resumer-item="18" value="3v" />
@@ -129,6 +129,7 @@
             assert.equal('2v 0t 1v 3v 4v', document.getElementById('t5').resume);
         });
 
+
         /**
          * Trigger event polyfill
          *
@@ -138,7 +139,9 @@
          */
         var _triggerEvent = function(element, eventName) {
             var event; // The custom event that will be created
-            if (document.createEvent) {
+            if  (window.Event) {
+                event = new Event('change');
+            } else if (document.createEvent) {
                 event = document.createEvent("HTMLEvents");
                 event.initEvent(eventName, true, true);
             } else {
@@ -155,10 +158,15 @@
             }
         };
 
-        test('test event', function() {
+        test('test event', function(done) {
+            var t5 = document.getElementById('t5');
             document.querySelector('#eventtester').value = '50v';
-            _triggerEvent(document.getElementById('t5'), 'change');
-            assert.equal('2v 0t 50v 3v 4v', document.getElementById('t5').resume);
+            _triggerEvent(t5, 'change');
+
+            setTimeout(function() {
+                assert.equal('2v 0t 50v 3v 4v', t5.resume);
+                done();
+            }, 300);
         });
     });
 </script>

@@ -142,7 +142,7 @@
                 this._setResume(this.emptyValue);
             }
 
-            this.fire('resumerChange', this.resume); //fire event
+            this.fire('resumerChange', {resume: this.resume}); //fire event
         },
 
         /**

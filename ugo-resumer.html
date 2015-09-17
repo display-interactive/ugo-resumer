@@ -7,7 +7,7 @@
         }
     </style>
     <template>
-        <span id="ugoResume" class="ugo-resume">{{resume}}</span>
+        <span id="ugoResume" class="ugo-resume"></span>
         <content id="ugoResumeContent"></content>
     </template>
 </dom-module>
@@ -145,12 +145,17 @@
 
             //send concat values or return empty_text
             if (items.length > 0) {
-                this._setResume(text.join(this.separator));
+                this._setResumeValue(text.join(this.separator));
             } else {
-                this._setResume(this.emptyValue);
+                this._setResumeValue(this.emptyValue);
             }
 
             this.fire('resumerChange', {resume: this.resume}); //fire event
+        },
+
+        _setResumeValue: function(value) {
+            this.$.ugoResume.innerHTML = value;
+            this._setResume(value);
         },
 
         /**

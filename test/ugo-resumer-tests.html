@@ -104,7 +104,7 @@
 
     <input type="hidden" resumer-item="18" value="3v" />
 
-    <input type="checkbox" resumer-item checked="checked" value="4v" resumer-force-value="4vForced" />
+    <input type="checkbox" resumer-item checked="checked" value="4v" resumer-force-value="&lt;br&gt;4vForced" />
 </ugo-resumer>
 
 
@@ -126,7 +126,7 @@
             assert.equal('3', document.getElementById('t2').resume); //it will get the last
             assert.equal('0t 1v 2v 3v 4v 5t 6t 8v 11t 15t 16t 17t 18t 21t', document.getElementById('t3').resume);
             assert.equal('4v 3vForced 2v 1v 0t', document.getElementById('t4').resume);
-            assert.equal('2v 0t 1v 3v 4vForced', document.getElementById('t5').resume);
+            assert.equal('2v 0t 1v 3v <br>4vForced', document.getElementById('t5').resume);
         });
 
 
@@ -164,7 +164,7 @@
             _triggerEvent(t5, 'change');
 
             setTimeout(function() {
-                assert.equal('2v 0t 50v 3v 4vForced', t5.resume);
+                assert.equal('2v 0t 50v 3v <br>4vForced', t5.resume);
                 done();
             }, 300);
         });

@@ -33,6 +33,14 @@
             },
 
             /**
+             * The attribute used to force value
+             */
+            forcedValueAttribute: {
+                type: String,
+                value: 'resumer-force-value'
+            },
+
+            /**
              * The selector to get get children
              */
             attributeSelector: {
@@ -167,9 +175,9 @@
                         option = element.options[i];
                         if (option.selected) {
                             if (null !== element.getAttribute('multiple')) {
-                                selected.push(this.getText(option).trim());
+                                selected.push(this.getForcedValueOrText(option).trim());
                             } else {
-                                return this.getText(option).trim();
+                                return this.getForcedValueOrText(option).trim();
                             }
                         }
                     }
@@ -184,17 +192,18 @@
 
                             if (element.id) {
                                 var label = document.querySelector('label[for="' + element.id + '"]');
-                                if (label)
-                                    return this.getText(label).trim();
+                                if (label) {
+                                    return this.getForcedValueOrText(label).trim();
+                                }
                             } else if (element.parentNode.tagName === 'LABEL') {
-                                return this.getText(element.parentNode).trim();
+                                return this.getForcedValueOrText(element.parentNode).trim();
                             }
                             break;
                     }
                     break;
             }
 
-            var text = this.getText(element).trim();
+            var text = this.getForcedValueOrText(element).trim();
             if ('' != text) {
                 return text;
             }
@@ -246,6 +255,17 @@
             }
 
             return ret;
+        },
+
+        /**
+         * @param element
+         */
+        getForcedValueOrText: function(element) {
+            if (element.hasAttribute(this.forcedValueAttribute)) {
+                return element.getAttribute(this.forcedValueAttribute);
+            }
+
+            return this.getText(element);
         }
     });
 </script>

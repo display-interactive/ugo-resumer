@@ -92,7 +92,7 @@
     <input type="hidden" resumer-item="3" value="1v" />
     <input type="text" resumer-item="2" value="2v" />
 
-    <input type="hidden" resumer-item="1" value="3v" />
+    <input type="hidden" resumer-item="1" value="3v" resumer-force-value="3vForced" />
 
     <input type="checkbox" resumer-item="0" checked="checked" value="4v" />
 </ugo-resumer>
@@ -104,7 +104,7 @@
 
     <input type="hidden" resumer-item="18" value="3v" />
 
-    <input type="checkbox" resumer-item checked="checked" value="4v" />
+    <input type="checkbox" resumer-item checked="checked" value="4v" resumer-force-value="4vForced" />
 </ugo-resumer>
 
 
@@ -125,8 +125,8 @@
             assert.equal('1', document.getElementById('t1').resume);
             assert.equal('3', document.getElementById('t2').resume); //it will get the last
             assert.equal('0t 1v 2v 3v 4v 5t 6t 8v 11t 15t 16t 17t 18t 21t', document.getElementById('t3').resume);
-            assert.equal('4v 3v 2v 1v 0t', document.getElementById('t4').resume);
-            assert.equal('2v 0t 1v 3v 4v', document.getElementById('t5').resume);
+            assert.equal('4v 3vForced 2v 1v 0t', document.getElementById('t4').resume);
+            assert.equal('2v 0t 1v 3v 4vForced', document.getElementById('t5').resume);
         });
 
 
@@ -164,7 +164,7 @@
             _triggerEvent(t5, 'change');
 
             setTimeout(function() {
-                assert.equal('2v 0t 50v 3v 4v', t5.resume);
+                assert.equal('2v 0t 50v 3v 4vForced', t5.resume);
                 done();
             }, 300);
         });

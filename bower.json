@@ -5,7 +5,7 @@
         "Florian Roy"
     ],
     "description": "Polymer Element helper to resume form contents",
-    "main": "element/*",
+    "main": "ugo-resumer.html",
     "ignore": [
         "**/.*",
         "node_modules",
